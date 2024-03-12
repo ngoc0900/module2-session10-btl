@@ -47,6 +47,7 @@ public class QLBook {
                         Book book = new Book();
                         book.input(scanner,i+1);
                         books.add(book);
+                        book.output();
                     }
                     break;
                 case 2:
@@ -92,16 +93,18 @@ public class QLBook {
                     }
                     break;
                 case 4:
-                    System.out.println("Tìm kiếm sách");
                     System.out.println("Tìm kiếm sách theo tên tác giả");
                     System.out.println("Mời nhập tên tác giả");
-                    String title = scanner.nextLine().toLowerCase();
-                    Book book2 = getBookByTitle(books,title );
-                    if (book2 != null) {
-                        book2.output();
-                        break;
-                    } else {
-                        System.out.println("Không tồn tại sách mà bạn muốn tìm");
+                    String title = scanner.nextLine();
+                    boolean checck = true;
+                    for (Book b : books) {
+                        if (b.getAuthor().toLowerCase().contains(title.toLowerCase())) {
+                            b.output();
+                            checck = false;
+                        }
+                    }
+                    if (checck){
+                        System.err.println("không tồn tại sách mà bạn mốn tìm.");
                     }
                     break;
                 case 5:
@@ -137,7 +140,7 @@ public class QLBook {
 
     private static Book getBookByTitle(List<Book> books, String title){
         for (Book book : books) {
-            if (book.getTitle().equalsIgnoreCase(title)) {
+            if (book.getTitle().toLowerCase().contains(title.toLowerCase())) {
                 return book;
             }
         }
@@ -147,7 +150,7 @@ public class QLBook {
     private static Book getBookByIdCategory(List<Book> books, int id) {
         for (Book book : books) {
             if (book.getCategoryId() == id) {
-                System.out.println("\tSách "+book.getTitle());
+                System.out.println("\tSách: "+book.getTitle());
             }
         }
         return null;
